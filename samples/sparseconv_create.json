@@ -1,0 +1,53 @@
+[
+    {"net_inputs":[
+        {"node_name":"new_0", 
+        "dtype":"TensorProto.FLOAT16", 
+        "shape":[1,1,4,4]}]
+    },
+
+    {"net_outputs":[
+        {"node_name":"new_1", 
+        "dtype":"TensorProto.FLOAT16", 
+        "shape":[1,2,4,4]}]
+    },
+    
+    {
+    "node_name":"conv0",
+    "op_type":"SparseConvolution",
+    "input_nodes":["new_0"],
+    "output_nodes":["new_1"],
+    "input_infos":[
+        {"dtype":"TensorProto.INT8", 
+        "shape":[1,1,4,4]}
+    ],
+    "output_infos":[
+        {"dtype":"TensorProto.INT8", 
+        "shape":[1,2,4,4]}
+    ],
+
+    "weights":[
+        {"name":"spconv0.weight",
+        "dtype":"TensorProto.FLOAT32",
+        "shape":[2,3,3,1],
+        "rand_min":1,
+        "rand_max":1},
+
+        {"name":"spconv1.weight",
+        "dtype":"TensorProto.FLOAT16",
+        "shape":[2],       
+        "rand_min":0,
+        "rand_max":0}
+    ],
+    "attributes":
+        {"kernel_size":[3,3],
+        "stride":[1,1],
+        "in_channels":[1],
+        "out_channels":[2],
+        "input_spatial_shape":[4, 4],
+        "output_spatial_shape":[4, 4],
+        "ndim":2,
+        "input_shape":[1],        
+        "dilation":[1,1]}
+    }
+
+]

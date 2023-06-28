@@ -1,0 +1,158 @@
+[
+    {"net_inputs":[
+        {"node_name":"773", 
+        "dtype":"TensorProto.INT8", 
+        "shape":[1,1,4,4]}]
+    },
+
+    {"net_outputs":[
+        {"node_name":"782", 
+        "dtype":"TensorProto.FLOAT16", 
+        "shape":[1,2,4,4]}]
+    },
+    
+    {
+    "node_name":"Conv_23",
+    "op_type":"SparseConvolution",
+    "input_nodes":["DequantizeLinear_19","DequantizeLinear_22"],
+    "input_infos":[
+        {"dtype":"TensorProto.FLOAT16", 
+        "shape":[1,1,4,4]},
+        {"dtype":"TensorProto.FLOAT16", 
+        "shape":[2,3,3,1]}
+    ],
+    "output_nodes":["782"],
+    "output_infos":[
+        {"dtype":"TensorProto.FLOAT16", 
+        "shape":[1,2,4,4]}
+    ],
+
+    "attributes":
+        {"kernel_size":[3,3],
+        "stride":[1,1],
+        "in_channels":[1],
+        "out_channels":[2],
+        "input_spatial_shape":[4, 4],
+        "output_spatial_shape":[4, 4],
+        "ndim":2,
+        "input_shape":[1],        
+        "dilation":[1,1]}
+    },
+
+    {
+        "node_name":"DequantizeLinear_19",
+        "op_type":"DequantizeLinear",
+        "input_nodes":["773"],
+        "input_infos":[
+            {"dtype":"TensorProto.INT8", 
+            "shape":[1,2,4,4]}
+        ],
+        "output_nodes":["Conv_23"],
+        "output_infos":[
+            {"dtype":"TensorProto.FLOAT16", 
+            "shape":[1,1,4,4]}
+        ],
+
+
+        "weights":[
+            {"name":"x_scale",
+            "dtype":"TensorProto.FLOAT16",
+            "shape":[1],
+            "rand_min":0.047210693359375,
+            "rand_max":0.047210693359375},
+    
+            {"name":"x_zero_point",
+            "dtype":"TensorProto.INT8",
+            "shape":[1],       
+            "rand_min":0,
+            "rand_max":0}],
+
+        "attributes":
+            {"kernel_size":[3,3],
+            "stride":[1,1],
+            "in_channels":[1],
+            "out_channels":[2],
+            "input_spatial_shape":[4, 4],
+            "output_spatial_shape":[4, 4],
+            "ndim":2,
+            "input_shape":[1],        
+            "dilation":[1,1]}
+    },
+    
+    {
+        "node_name":"QuantizeLinear_21",
+        "op_type":"QuantizeLinear",
+    
+        "input_nodes":[],
+        "input_infos":[
+        ],
+        "output_nodes":["DequantizeLinear_22"],
+        "output_infos":[
+            {"dtype":"TensorProto.INT8", 
+            "shape":[2,3,3,1]}
+        ],
+
+        "weights":[
+            {"name":"X",
+            "dtype":"TensorProto.FLOAT16",
+            "shape":[1],
+            "rand_min":-0.01,
+            "rand_max":0.2},
+    
+            {"name":"y_scale",
+            "dtype":"TensorProto.FLOAT16",
+            "shape":[1],       
+            "rand_min":0.01,
+            "rand_max":0.02},
+
+            {"name":"x_zero_point",
+            "dtype":"TensorProto.INT8",
+            "shape":[1],       
+            "rand_min":0,
+            "rand_max":0}],
+
+        "attributes":
+            {"axis":0}
+    },
+   
+    {
+        "node_name":"DequantizeLinear_22",
+        "op_type":"DequantizeLinear",
+        "inputs":["QuantizeLinear_21"],
+        "outputs":["Conv_23"],
+    
+        "input_nodes":["QuantizeLinear_21"],
+        "input_infos":[
+            {"dtype":"TensorProto.INT8", 
+            "shape":[2,3,3,1]}
+        ],
+
+        "output_nodes":["Conv_23"],
+        "output_infos":[
+            {"dtype":"TensorProto.FLOAT16", 
+            "shape":[2,3,3,1]}
+        ],
+
+        "weights":[
+            {"name":"x",
+            "dtype":"TensorProto.INT8",
+            "shape":[1],
+            "rand_min":-0.01,
+            "rand_max":0.2},
+    
+            {"name":"x_scale",
+            "dtype":"TensorProto.FLOAT16",
+            "shape":[1],       
+            "rand_min":0.01,
+            "rand_max":0.02},
+
+            {"name":"x_zero_point",
+            "dtype":"TensorProto.INT8",
+            "shape":[1],       
+            "rand_min":0,
+            "rand_max":0}],
+
+        "attributes":
+            {"axis":0}
+    }
+]
